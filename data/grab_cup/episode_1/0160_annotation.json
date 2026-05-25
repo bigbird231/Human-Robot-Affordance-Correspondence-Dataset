@@ -1,0 +1,33 @@
+{
+  "task": "grab_cube",
+  "frame_id": "0160",
+  "human_image": "0160_human.jpg",
+  "robot_image": "0160_robot.jpg",
+  "image_size": {
+    "human": {
+      "width": 426,
+      "height": 240
+    },
+    "robot": {
+      "width": 426,
+      "height": 240
+    }
+  },
+  "human_points": [
+    {
+      "id": 1,
+      "x": 160,
+      "y": 78,
+      "label": "grasp"
+    }
+  ],
+  "robot_points": [
+    {
+      "id": 1,
+      "x": 158,
+      "y": 96,
+      "label": "grasp"
+    }
+  ],
+  "note": "Coordinates are original image pixel coordinates."
+}

@@ -1,0 +1,12 @@
+task: grab_cube
+frame_id: 0220
+human_image: 0220_human.jpg
+robot_image: 0220_robot.jpg
+
+[human_points]
+1,153,123,grasp
+2,140,138,grasp
+
+[robot_points]
+1,150,128,grasp
+2,138,147,grasp

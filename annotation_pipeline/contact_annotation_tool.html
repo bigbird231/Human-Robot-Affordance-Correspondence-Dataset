@@ -1,0 +1,749 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Human-Robot Contact Point Annotation Tool</title>
+    <style>
+        :root {
+            --bg: #f6f7f9;
+            --card: #fff;
+            --text: #1f2937;
+            --muted: #6b7280;
+            --border: #d1d5db;
+            --accent: #2563eb;
+            --danger: #dc2626
+        }
+
+        * {
+            box-sizing: border-box
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, Helvetica, sans-serif;
+            background: var(--bg);
+            color: var(--text)
+        }
+
+        header {
+            padding: 18px 24px;
+            background: #111827;
+            color: #fff
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 22px
+        }
+
+        header p {
+            margin: 6px 0 0;
+            color: #d1d5db;
+            font-size: 14px
+        }
+
+        main {
+            padding: 20px;
+            max-width: 1500px;
+            margin: 0 auto
+        }
+
+        .tabs {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 16px
+        }
+
+        .tab-btn {
+            background: #4b5563
+        }
+
+        .tab-btn.active {
+            background: var(--accent)
+        }
+
+        .tab-content {
+            display: none
+        }
+
+        .tab-content.active {
+            display: block
+        }
+
+        .toolbar {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 16px;
+            display: grid;
+            grid-template-columns:repeat(4, minmax(160px, 1fr));
+            gap: 12px;
+            align-items: end;
+            margin-bottom: 16px
+        }
+
+        .field {
+            display: flex;
+            flex-direction: column;
+            gap: 6px
+        }
+
+        label {
+            font-weight: bold;
+            font-size: 13px
+        }
+
+        input, select, button, textarea {
+            font: inherit
+        }
+
+        input[type=file], input[type=text], input[type=number], select {
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 8px;
+            background: white
+        }
+
+        button {
+            border: none;
+            border-radius: 8px;
+            padding: 9px 12px;
+            cursor: pointer;
+            background: var(--accent);
+            color: white;
+            font-weight: bold
+        }
+
+        button.secondary {
+            background: #4b5563
+        }
+
+        button.danger {
+            background: var(--danger)
+        }
+
+        .status {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 12px 16px;
+            margin-bottom: 16px;
+            font-size: 14px;
+            color: var(--muted)
+        }
+
+        .workspace {
+            display: grid;
+            grid-template-columns:1fr 1fr;
+            gap: 16px
+        }
+
+        .area-workspace {
+            margin-top: 16px
+        }
+
+        .panel {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 12px
+        }
+
+        .panel h2 {
+            margin: 0 0 10px;
+            font-size: 18px
+        }
+
+        .canvas-wrap {
+            width: 100%;
+            overflow: auto;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            background: #e5e7eb;
+            min-height: 260px;
+            display: flex;
+            justify-content: center;
+            align-items: center
+        }
+
+        canvas {
+            max-width: 100%;
+            height: auto;
+            background: #ddd;
+            cursor: crosshair
+        }
+
+        .points {
+            margin-top: 10px;
+            max-height: 180px;
+            overflow: auto;
+            font-size: 13px;
+            border-top: 1px solid var(--border);
+            padding-top: 8px
+        }
+
+        .point-row {
+            display: flex;
+            justify-content: space-between;
+            gap: 8px;
+            padding: 4px 0;
+            border-bottom: 1px solid #f3f4f6
+        }
+
+        .help {
+            margin-top: 16px;
+            background: #fff7ed;
+            border: 1px solid #fed7aa;
+            border-radius: 12px;
+            padding: 14px 16px;
+            font-size: 14px;
+            line-height: 1.5
+        }
+
+        .export-box {
+            margin-top: 16px;
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 14px
+        }
+
+        textarea {
+            width: 100%;
+            min-height: 160px;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 8px;
+            font-family: Menlo, Consolas, monospace;
+            font-size: 12px
+        }
+
+        @media (max-width: 900px) {
+            .toolbar {
+                grid-template-columns:1fr
+            }
+
+            .workspace {
+                grid-template-columns:1fr
+            }
+        }
+    </style>
+</head>
+<body>
+<header><h1>Human-Robot Contact Point Annotation Tool</h1>
+    <p>Load paired frames, click contact points, visualize contact area radius, export annotated data, or crop WHIRL
+        screenshots.</p></header>
+<main>
+    <div class="tabs">
+        <button class="tab-btn active" id="annotationTabBtn">Human2Robot annotation</button>
+        <button class="tab-btn" id="cropTabBtn">WHIRL screenshot crop</button>
+    </div>
+
+    <section id="annotationTab" class="tab-content active">
+        <section class="toolbar">
+            <div class="field"><label for="humanInput">Human image</label><input id="humanInput" type="file"
+                                                                                 accept="image/*"/></div>
+            <div class="field"><label for="robotInput">Robot image</label><input id="robotInput" type="file"
+                                                                                 accept="image/*"/></div>
+            <div class="field"><label for="taskName">Task / object label</label><input id="taskName" type="text"
+                                                                                       placeholder="e.g., grab_cube, hammer_handle"/>
+            </div>
+            <div class="field"><label for="pointType">Contact label</label><select id="pointType">
+                <option value="contact">contact</option>
+                <option value="grasp">grasp</option>
+                <option value="support">support</option>
+                <option value="tool_handle">tool_handle</option>
+                <option value="functional_end">functional_end</option>
+                <option value="other">other</option>
+            </select></div>
+            <div class="field"><label for="areaRadius">Contact area radius (pixels)</label><input id="areaRadius"
+                                                                                                  type="number" min="1"
+                                                                                                  step="1" value="10"/>
+            </div>
+            <button id="undoBtn" class="secondary">Undo last point</button>
+            <button id="clearBtn" class="danger">Clear all points</button>
+            <button id="downloadDataBtn">Download annotated data</button>
+        </section>
+        <div class="status" id="status">Load one human frame and one robot frame. Then click on each image to annotate
+            contact points.
+        </div>
+        <section class="workspace">
+            <div class="panel"><h2>Human frame</h2>
+                <div class="canvas-wrap">
+                    <canvas id="humanCanvas"></canvas>
+                </div>
+                <div class="points" id="humanPoints"></div>
+            </div>
+            <div class="panel"><h2>Robot frame</h2>
+                <div class="canvas-wrap">
+                    <canvas id="robotCanvas"></canvas>
+                </div>
+                <div class="points" id="robotPoints"></div>
+            </div>
+        </section>
+        <section class="workspace area-workspace">
+            <div class="panel"><h2>Human contact area</h2>
+                <div class="canvas-wrap">
+                    <canvas id="humanAreaCanvas"></canvas>
+                </div>
+            </div>
+            <div class="panel"><h2>Robot contact area</h2>
+                <div class="canvas-wrap">
+                    <canvas id="robotAreaCanvas"></canvas>
+                </div>
+            </div>
+        </section>
+        <section class="export-box"><label for="jsonPreview">Annotation preview</label><textarea id="jsonPreview"
+                                                                                                 readonly></textarea>
+        </section>
+        <section class="help"><strong>Suggested annotation rule:</strong> Click the physical contact region between
+            hand/finger and object in the human image, and the corresponding gripper/object contact region in the robot
+            image. Coordinates and radius are stored in original image pixel units.
+        </section>
+    </section>
+
+    <section id="cropTab" class="tab-content">
+        <section class="toolbar">
+            <div class="field"><label for="cropInput">WHIRL screenshot</label><input id="cropInput" type="file"
+                                                                                     accept="image/*"/></div>
+            <div class="field"><label for="cropWidth">Crop width</label><input id="cropWidth" type="number" min="1"
+                                                                               step="1" value="426"/></div>
+            <div class="field"><label for="cropHeight">Crop height</label><input id="cropHeight" type="number" min="1"
+                                                                                 step="1" value="260"/></div>
+            <button id="downloadCropBtn">Download cropped image</button>
+        </section>
+        <div class="status" id="cropStatus">Load one screenshot, click the crop center, set width and height, then
+            download the cropped image.
+        </div>
+        <section class="workspace">
+            <div class="panel"><h2>Original screenshot</h2>
+                <div class="canvas-wrap">
+                    <canvas id="cropCanvas"></canvas>
+                </div>
+            </div>
+            <div class="panel"><h2>Cropped preview</h2>
+                <div class="canvas-wrap">
+                    <canvas id="cropPreviewCanvas"></canvas>
+                </div>
+            </div>
+        </section>
+    </section>
+</main>
+
+<script>
+    const state = {
+        human: {image: null, filename: "", points: []},
+        robot: {image: null, filename: "", points: []},
+        history: []
+    };
+    const cropState = {image: null, filename: "", center: null};
+    const $ = id => document.getElementById(id);
+    const humanCanvas = $("humanCanvas"), robotCanvas = $("robotCanvas"), humanAreaCanvas = $("humanAreaCanvas"),
+        robotAreaCanvas = $("robotAreaCanvas");
+    const humanCtx = humanCanvas.getContext("2d"), robotCtx = robotCanvas.getContext("2d"),
+        humanAreaCtx = humanAreaCanvas.getContext("2d"), robotAreaCtx = robotAreaCanvas.getContext("2d");
+    const cropCanvas = $("cropCanvas"), cropPreviewCanvas = $("cropPreviewCanvas"),
+        cropCtx = cropCanvas.getContext("2d"), cropPreviewCtx = cropPreviewCanvas.getContext("2d");
+
+    function switchTab(tab) {
+        $("annotationTab").classList.toggle("active", tab === "annotation");
+        $("cropTab").classList.toggle("active", tab === "crop");
+        $("annotationTabBtn").classList.toggle("active", tab === "annotation");
+        $("cropTabBtn").classList.toggle("active", tab === "crop");
+    }
+
+    $("annotationTabBtn").onclick = () => switchTab("annotation");
+    $("cropTabBtn").onclick = () => switchTab("crop");
+
+    function getRadius() {
+        const r = parseInt($("areaRadius").value, 10);
+        return Number.isFinite(r) && r > 0 ? r : 1;
+    }
+
+    function getCanvas(side) {
+        return side === "human" ? humanCanvas : robotCanvas
+    }
+
+    function getCtx(side) {
+        return side === "human" ? humanCtx : robotCtx
+    }
+
+    function getAreaCanvas(side) {
+        return side === "human" ? humanAreaCanvas : robotAreaCanvas
+    }
+
+    function getAreaCtx(side) {
+        return side === "human" ? humanAreaCtx : robotAreaCtx
+    }
+
+    function loadImage(file, side) {
+        if (!file) return;
+        const img = new Image();
+        img.onload = () => {
+            state[side].image = img;
+            state[side].filename = file.name;
+            state[side].points = [];
+            draw(side);
+            drawArea(side);
+            updateUI();
+        };
+        img.src = URL.createObjectURL(file);
+    }
+
+    $("humanInput").onchange = e => loadImage(e.target.files[0], "human");
+    $("robotInput").onchange = e => loadImage(e.target.files[0], "robot");
+    $("taskName").oninput = updateUI;
+    $("pointType").onchange = updateUI;
+    $("areaRadius").oninput = () => {
+        drawArea("human");
+        drawArea("robot");
+        updateUI();
+    };
+
+    function drawEmpty(ctx, canvas, msg, w = 426, h = 240) {
+        canvas.width = w;
+        canvas.height = h;
+        ctx.clearRect(0, 0, w, h);
+        ctx.fillStyle = "#e5e7eb";
+        ctx.fillRect(0, 0, w, h);
+        ctx.fillStyle = "#6b7280";
+        ctx.font = "16px Arial";
+        ctx.fillText(msg, Math.max(30, w / 2 - 70), h / 2);
+    }
+
+    function draw(side) {
+        const canvas = getCanvas(side), ctx = getCtx(side), item = state[side];
+        if (!item.image) {
+            drawEmpty(ctx, canvas, "No image loaded");
+            return;
+        }
+        canvas.width = item.image.naturalWidth;
+        canvas.height = item.image.naturalHeight;
+        ctx.drawImage(item.image, 0, 0);
+        item.points.forEach((p, i) => drawPoint(ctx, p.x, p.y, i + 1, side));
+    }
+
+    function drawArea(side) {
+        const canvas = getAreaCanvas(side), ctx = getAreaCtx(side), item = state[side];
+        if (!item.image) {
+            drawEmpty(ctx, canvas, "No image loaded");
+            return;
+        }
+        canvas.width = item.image.naturalWidth;
+        canvas.height = item.image.naturalHeight;
+        ctx.drawImage(item.image, 0, 0);
+        item.points.forEach((p, i) => drawAreaPoint(ctx, p.x, p.y, i + 1, side, p.radius || getRadius()));
+    }
+
+    function drawPoint(ctx, x, y, index, side) {
+        const color = side === "human" ? "#ef4444" : "#22c55e";
+        ctx.beginPath();
+        ctx.arc(x, y, 6, 0, Math.PI * 2);
+        ctx.fillStyle = color;
+        ctx.fill();
+        ctx.lineWidth = 2;
+        ctx.strokeStyle = "#fff";
+        ctx.stroke();
+        ctx.font = "bold 13px Arial";
+        ctx.fillStyle = "#fff";
+        ctx.textAlign = "center";
+        ctx.textBaseline = "middle";
+        ctx.fillText(String(index), x, y);
+        ctx.textAlign = "left";
+        ctx.textBaseline = "alphabetic";
+    }
+
+    function drawAreaPoint(ctx, x, y, index, side, r) {
+        const color = side === "human" ? "rgba(239,68,68,0.35)" : "rgba(34,197,94,0.35)",
+            border = side === "human" ? "#ef4444" : "#22c55e";
+        ctx.beginPath();
+        ctx.arc(x, y, r, 0, Math.PI * 2);
+        ctx.fillStyle = color;
+        ctx.fill();
+        ctx.lineWidth = 2;
+        ctx.strokeStyle = border;
+        ctx.stroke();
+        ctx.font = "bold 13px Arial";
+        ctx.fillStyle = "#ffffff";
+        ctx.textAlign = "center";
+        ctx.textBaseline = "middle";
+        ctx.fillText(String(index), x, y);
+        ctx.textAlign = "left";
+        ctx.textBaseline = "alphabetic";
+    }
+
+    function canvasClick(e, side) {
+        const canvas = getCanvas(side), item = state[side];
+        if (!item.image) {
+            setStatus("Please load the " + side + " image first.");
+            return;
+        }
+        const rect = canvas.getBoundingClientRect();
+        const x = Math.round((e.clientX - rect.left) * canvas.width / rect.width),
+            y = Math.round((e.clientY - rect.top) * canvas.height / rect.height);
+        const point = {id: item.points.length + 1, x, y, label: $("pointType").value, radius: getRadius(), side};
+        item.points.push(point);
+        state.history.push({side, point});
+        draw(side);
+        drawArea(side);
+        updateUI();
+    }
+
+    humanCanvas.onclick = e => canvasClick(e, "human");
+    robotCanvas.onclick = e => canvasClick(e, "robot");
+
+    function undoLast() {
+        const last = state.history.pop();
+        if (!last) return;
+        state[last.side].points.pop();
+        state[last.side].points.forEach((p, i) => p.id = i + 1);
+        draw(last.side);
+        drawArea(last.side);
+        updateUI();
+    }
+
+    function clearAll() {
+        state.human.points = [];
+        state.robot.points = [];
+        state.history = [];
+        draw("human");
+        draw("robot");
+        drawArea("human");
+        drawArea("robot");
+        updateUI();
+    }
+
+    $("undoBtn").onclick = undoLast;
+    $("clearBtn").onclick = clearAll;
+
+    function inferFrameId() {
+        const name = state.human.filename || state.robot.filename || "";
+        const m = name.match(/(\d+)_?(human|robot)?/i);
+        return m ? m[1] : "";
+    }
+
+    function annotationObject() {
+        return {
+            task: $("taskName").value.trim(),
+            frame_id: inferFrameId(),
+            contact_area_radius: getRadius(),
+            human_image: state.human.filename,
+            robot_image: state.robot.filename,
+            image_size: {
+                human: state.human.image ? {
+                    width: state.human.image.naturalWidth,
+                    height: state.human.image.naturalHeight
+                } : null,
+                robot: state.robot.image ? {
+                    width: state.robot.image.naturalWidth,
+                    height: state.robot.image.naturalHeight
+                } : null
+            },
+            human_points: state.human.points.map(p => ({id: p.id, x: p.x, y: p.y, label: p.label, radius: p.radius})),
+            robot_points: state.robot.points.map(p => ({id: p.id, x: p.x, y: p.y, label: p.label, radius: p.radius})),
+            note: "Coordinates and radius are original image pixel units."
+        };
+    }
+
+    function updateUI() {
+        $("jsonPreview").value = JSON.stringify(annotationObject(), null, 2);
+        setStatus(`Human points: ${state.human.points.length}. Robot points: ${state.robot.points.length}. Current label: ${$("pointType").value}. Radius: ${getRadius()} px.`);
+        renderPointList("human");
+        renderPointList("robot");
+    }
+
+    function renderPointList(side) {
+        const c = $(side + "Points"), points = state[side].points;
+        if (!points.length) {
+            c.innerHTML = "<span style='color:#6b7280'>No points annotated.</span>";
+            return;
+        }
+        c.innerHTML = points.map(p => `<div class="point-row"><span>#${p.id} ${p.label}</span><span>x=${p.x}, y=${p.y}, r=${p.radius}</span></div>`).join("");
+    }
+
+    function setStatus(t) {
+        $("status").textContent = t;
+    }
+
+    function downloadBlob(filename, blob) {
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = filename;
+        a.click();
+        setTimeout(() => URL.revokeObjectURL(url), 1000);
+    }
+
+    function downloadText(filename, content, mime = "text/plain") {
+        downloadBlob(filename, new Blob([content], {type: mime}));
+    }
+
+    function canvasToBlob(canvas) {
+        return new Promise(resolve => canvas.toBlob(resolve, "image/png"));
+    }
+
+    async function downloadCanvasFile(filename, canvas) {
+        const blob = await canvasToBlob(canvas);
+        downloadBlob(filename, blob);
+        await new Promise(r => setTimeout(r, 120));
+    }
+
+    function makeOriginCanvas(side) {
+        const item = state[side];
+        if (!item.image) return null;
+        const c = document.createElement("canvas");
+        c.width = item.image.naturalWidth;
+        c.height = item.image.naturalHeight;
+        c.getContext("2d").drawImage(item.image, 0, 0);
+        return c;
+    }
+
+    
+    function annotationTxt() {
+        const obj = annotationObject();
+        const lines = [];
+        lines.push(`task: ${obj.task}`);
+        lines.push(`frame_id: ${obj.frame_id}`);
+        lines.push(`contact_area_radius: ${obj.contact_area_radius}`);
+        lines.push(`human_image: ${obj.human_image}`);
+        lines.push(`robot_image: ${obj.robot_image}`);
+        lines.push("");
+        lines.push("[human_points]");
+        obj.human_points.forEach(p => lines.push(`${p.id},${p.x},${p.y},${p.radius},${p.label}`));
+        lines.push("");
+        lines.push("[robot_points]");
+        obj.robot_points.forEach(p => lines.push(`${p.id},${p.x},${p.y},${p.radius},${p.label}`));
+        lines.push("");
+        lines.push("format: id,x,y,radius,label");
+        return lines.join("\n");
+    }
+
+    async function downloadAnnotatedData() {
+        const frameId = inferFrameId() || "annotation";
+        downloadText(`${frameId}_annotation.json`, JSON.stringify(annotationObject(), null, 2), "application/json");
+        downloadText(`${frameId}_annotation.txt`, annotationTxt(), "text/plain");
+        const h0 = makeOriginCanvas("human"), r0 = makeOriginCanvas("robot");
+        if (h0) await downloadCanvasFile(`${frameId}_human_origin.png`, h0);
+        if (state.human.image) await downloadCanvasFile(`${frameId}_human_annotated.png`, humanCanvas);
+        if (state.human.image) await downloadCanvasFile(`${frameId}_human_area.png`, humanAreaCanvas);
+        if (r0) await downloadCanvasFile(`${frameId}_robot_origin.png`, r0);
+        if (state.robot.image) await downloadCanvasFile(`${frameId}_robot_annotated.png`, robotCanvas);
+        if (state.robot.image) await downloadCanvasFile(`${frameId}_robot_area.png`, robotAreaCanvas);
+                setStatus("Annotated data download triggered. Your browser may ask for permission to download multiple files.");
+    }
+
+    $("downloadDataBtn").onclick = downloadAnnotatedData;
+
+    function loadCropImage(file) {
+        if (!file) return;
+        const img = new Image();
+        img.onload = () => {
+            cropState.image = img;
+            cropState.filename = file.name;
+            cropState.center = null;
+            drawCropImage();
+            drawCropPreview();
+            $("cropStatus").textContent = "Image loaded. Click the desired crop center.";
+        };
+        img.src = URL.createObjectURL(file);
+    }
+
+    $("cropInput").onchange = e => loadCropImage(e.target.files[0]);
+    $("cropWidth").oninput = () => {
+        drawCropImage();
+        drawCropPreview();
+    };
+    $("cropHeight").oninput = () => {
+        drawCropImage();
+        drawCropPreview();
+    };
+
+    function getCropSize() {
+        const w = parseInt($("cropWidth").value, 10), h = parseInt($("cropHeight").value, 10);
+        return {width: Number.isFinite(w) && w > 0 ? w : 1, height: Number.isFinite(h) && h > 0 ? h : 1};
+    }
+
+    function drawCropImage() {
+        if (!cropState.image) {
+            drawEmpty(cropCtx, cropCanvas, "No image loaded", 426, 260);
+            return;
+        }
+        cropCanvas.width = cropState.image.naturalWidth;
+        cropCanvas.height = cropState.image.naturalHeight;
+        cropCtx.drawImage(cropState.image, 0, 0);
+        if (cropState.center) {
+            const {width, height} = getCropSize(), x0 = cropState.center.x - width / 2,
+                y0 = cropState.center.y - height / 2;
+            cropCtx.strokeStyle = "#ef4444";
+            cropCtx.lineWidth = 3;
+            cropCtx.strokeRect(x0, y0, width, height);
+            cropCtx.beginPath();
+            cropCtx.arc(cropState.center.x, cropState.center.y, 5, 0, Math.PI * 2);
+            cropCtx.fillStyle = "#ef4444";
+            cropCtx.fill();
+            cropCtx.strokeStyle = "#fff";
+            cropCtx.lineWidth = 2;
+            cropCtx.stroke();
+        }
+    }
+
+    function makeCroppedCanvas() {
+        if (!cropState.image || !cropState.center) return null;
+        const {width, height} = getCropSize();
+        const sx = Math.round(cropState.center.x - width / 2), sy = Math.round(cropState.center.y - height / 2);
+        const c = document.createElement("canvas");
+        c.width = width;
+        c.height = height;
+        const ctx = c.getContext("2d");
+        ctx.fillStyle = "#000";
+        ctx.fillRect(0, 0, width, height);
+        ctx.drawImage(cropState.image, sx, sy, width, height, 0, 0, width, height);
+        return c;
+    }
+
+    function drawCropPreview() {
+        const out = makeCroppedCanvas();
+        if (!out) {
+            drawEmpty(cropPreviewCtx, cropPreviewCanvas, "No crop preview", 426, 260);
+            return;
+        }
+        cropPreviewCanvas.width = out.width;
+        cropPreviewCanvas.height = out.height;
+        cropPreviewCtx.drawImage(out, 0, 0);
+    }
+
+    cropCanvas.onclick = e => {
+        if (!cropState.image) {
+            $("cropStatus").textContent = "Please load a screenshot first.";
+            return;
+        }
+        const rect = cropCanvas.getBoundingClientRect();
+        cropState.center = {
+            x: Math.round((e.clientX - rect.left) * cropCanvas.width / rect.width),
+            y: Math.round((e.clientY - rect.top) * cropCanvas.height / rect.height)
+        };
+        drawCropImage();
+        drawCropPreview();
+        $("cropStatus").textContent = `Crop center selected: x=${cropState.center.x}, y=${cropState.center.y}.`;
+    };
+    $("downloadCropBtn").onclick = async () => {
+        const out = makeCroppedCanvas();
+        if (!out) {
+            $("cropStatus").textContent = "Please load an image and click a crop center first.";
+            return;
+        }
+        const base = cropState.filename ? cropState.filename.replace(/\.[^/.]+$/, "") : "crop";
+        await downloadCanvasFile(`${base}_cropped.png`, out);
+        $("cropStatus").textContent = "Cropped image download triggered.";
+    };
+    draw("human");
+    draw("robot");
+    drawArea("human");
+    drawArea("robot");
+    drawCropImage();
+    drawCropPreview();
+    updateUI();
+</script>
+</body>
+</html>

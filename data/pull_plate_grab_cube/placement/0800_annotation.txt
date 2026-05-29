@@ -1,0 +1,13 @@
+task: pull_plate_grab_cube
+frame_id: 0800
+contact_area_radius: 5
+human_image: 0800_human.jpg
+robot_image: 0800_robot.jpg
+
+[human_points]
+1,332,50,5,contact
+
+[robot_points]
+1,308,84,5,contact
+
+format: id,x,y,radius,label

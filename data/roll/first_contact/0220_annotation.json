@@ -1,0 +1,36 @@
+{
+  "task": "roll",
+  "frame_id": "0220",
+  "contact_area_radius": 5,
+  "human_image": "0220_human.jpg",
+  "robot_image": "0220_robot.jpg",
+  "image_size": {
+    "human": {
+      "width": 426,
+      "height": 240
+    },
+    "robot": {
+      "width": 426,
+      "height": 240
+    }
+  },
+  "human_points": [
+    {
+      "id": 1,
+      "x": 177,
+      "y": 129,
+      "label": "contact",
+      "radius": 5
+    }
+  ],
+  "robot_points": [
+    {
+      "id": 1,
+      "x": 159,
+      "y": 147,
+      "label": "contact",
+      "radius": 5
+    }
+  ],
+  "note": "Coordinates and radius are original image pixel units."
+}

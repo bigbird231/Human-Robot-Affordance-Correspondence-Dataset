@@ -1,0 +1,13 @@
+task: push_plate_v1
+frame_id: 0360
+contact_area_radius: 5
+human_image: 0360_human.jpg
+robot_image: 0360_robot.jpg
+
+[human_points]
+1,344,131,5,contact
+
+[robot_points]
+1,336,120,5,contact
+
+format: id,x,y,radius,label

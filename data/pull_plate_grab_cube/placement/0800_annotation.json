@@ -1,0 +1,36 @@
+{
+  "task": "pull_plate_grab_cube",
+  "frame_id": "0800",
+  "contact_area_radius": 5,
+  "human_image": "0800_human.jpg",
+  "robot_image": "0800_robot.jpg",
+  "image_size": {
+    "human": {
+      "width": 426,
+      "height": 240
+    },
+    "robot": {
+      "width": 426,
+      "height": 240
+    }
+  },
+  "human_points": [
+    {
+      "id": 1,
+      "x": 332,
+      "y": 50,
+      "label": "contact",
+      "radius": 5
+    }
+  ],
+  "robot_points": [
+    {
+      "id": 1,
+      "x": 308,
+      "y": 84,
+      "label": "contact",
+      "radius": 5
+    }
+  ],
+  "note": "Coordinates and radius are original image pixel units."
+}

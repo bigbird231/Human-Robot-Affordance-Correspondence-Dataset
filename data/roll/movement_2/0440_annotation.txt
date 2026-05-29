@@ -1,0 +1,15 @@
+task: roll
+frame_id: 0440
+contact_area_radius: 5
+human_image: 0440_human.jpg
+robot_image: 0440_robot.jpg
+
+[human_points]
+1,304,71,5,contact
+2,304,88,5,contact
+
+[robot_points]
+1,292,145,5,contact
+2,287,164,5,contact
+
+format: id,x,y,radius,label

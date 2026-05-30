@@ -1,0 +1,20 @@
+{
+  "task": "push_box",
+  "frame_id": "0020",
+  "contact_area_radius": 5,
+  "human_image": "0020_human.jpg",
+  "robot_image": "0020_robot.jpg",
+  "image_size": {
+    "human": {
+      "width": 426,
+      "height": 240
+    },
+    "robot": {
+      "width": 426,
+      "height": 240
+    }
+  },
+  "human_points": [],
+  "robot_points": [],
+  "note": "Coordinates and radius are original image pixel units."
+}

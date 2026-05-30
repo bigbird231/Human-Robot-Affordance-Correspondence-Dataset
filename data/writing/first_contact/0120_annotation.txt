@@ -1,0 +1,15 @@
+task: writing
+frame_id: 0120
+contact_area_radius: 2
+human_image: 0120_human.jpg
+robot_image: 0120_robot.jpg
+
+[human_points]
+1,214,75,2,contact
+2,223,66,2,contact
+
+[robot_points]
+1,218,50,2,contact
+2,226,42,2,contact
+
+format: id,x,y,radius,label

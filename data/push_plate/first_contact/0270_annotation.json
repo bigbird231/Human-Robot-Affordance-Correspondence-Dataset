@@ -1,0 +1,36 @@
+{
+  "task": "push_plate",
+  "frame_id": "0270",
+  "contact_area_radius": 2,
+  "human_image": "0270_human.jpg",
+  "robot_image": "0270_robot.jpg",
+  "image_size": {
+    "human": {
+      "width": 426,
+      "height": 240
+    },
+    "robot": {
+      "width": 426,
+      "height": 240
+    }
+  },
+  "human_points": [
+    {
+      "id": 1,
+      "x": 309,
+      "y": 44,
+      "label": "contact",
+      "radius": 2
+    }
+  ],
+  "robot_points": [
+    {
+      "id": 1,
+      "x": 312,
+      "y": 52,
+      "label": "contact",
+      "radius": 2
+    }
+  ],
+  "note": "Coordinates and radius are original image pixel units."
+}

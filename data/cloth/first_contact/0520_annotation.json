@@ -1,0 +1,50 @@
+{
+  "task": "cloth",
+  "frame_id": "0520",
+  "contact_area_radius": 4,
+  "human_image": "0520_human.jpg",
+  "robot_image": "0520_robot.jpg",
+  "image_size": {
+    "human": {
+      "width": 426,
+      "height": 240
+    },
+    "robot": {
+      "width": 426,
+      "height": 240
+    }
+  },
+  "human_points": [
+    {
+      "id": 1,
+      "x": 163,
+      "y": 123,
+      "label": "contact",
+      "radius": 2
+    },
+    {
+      "id": 2,
+      "x": 174,
+      "y": 117,
+      "label": "contact",
+      "radius": 2
+    }
+  ],
+  "robot_points": [
+    {
+      "id": 1,
+      "x": 149,
+      "y": 138,
+      "label": "contact",
+      "radius": 4
+    },
+    {
+      "id": 2,
+      "x": 159,
+      "y": 122,
+      "label": "contact",
+      "radius": 4
+    }
+  ],
+  "note": "Coordinates and radius are original image pixel units."
+}

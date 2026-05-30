@@ -1,0 +1,50 @@
+{
+  "task": "grab_both_cubes_v1",
+  "frame_id": "0290",
+  "contact_area_radius": 3,
+  "human_image": "0290_human.jpg",
+  "robot_image": "0290_robot.jpg",
+  "image_size": {
+    "human": {
+      "width": 426,
+      "height": 240
+    },
+    "robot": {
+      "width": 426,
+      "height": 240
+    }
+  },
+  "human_points": [
+    {
+      "id": 1,
+      "x": 126,
+      "y": 129,
+      "label": "contact",
+      "radius": 2
+    },
+    {
+      "id": 2,
+      "x": 141,
+      "y": 106,
+      "label": "contact",
+      "radius": 5
+    }
+  ],
+  "robot_points": [
+    {
+      "id": 1,
+      "x": 100,
+      "y": 140,
+      "label": "contact",
+      "radius": 3
+    },
+    {
+      "id": 2,
+      "x": 111,
+      "y": 119,
+      "label": "contact",
+      "radius": 3
+    }
+  ],
+  "note": "Coordinates and radius are original image pixel units."
+}

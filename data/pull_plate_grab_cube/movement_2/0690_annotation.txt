@@ -1,15 +1,15 @@
 task: pull_plate_grab_cube
 frame_id: 0690
-contact_area_radius: 5
+contact_area_radius: 4
 human_image: 0690_human.jpg
 robot_image: 0690_robot.jpg
 
 [human_points]
-1,254,31,5,contact
-2,267,6,5,contact
+1,264,6,2,contact
+2,255,33,4,contact
 
 [robot_points]
-1,202,77,5,contact
-2,218,55,5,contact
+1,217,56,2,contact
+2,201,79,4,contact
 
 format: id,x,y,radius,label

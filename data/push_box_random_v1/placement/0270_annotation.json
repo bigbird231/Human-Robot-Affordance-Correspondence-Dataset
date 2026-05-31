@@ -17,17 +17,17 @@
   "human_points": [
     {
       "id": 1,
-      "x": 273,
+      "x": 275,
       "y": 158,
       "label": "contact",
-      "radius": 5
+      "radius": 3
     }
   ],
   "robot_points": [
     {
       "id": 1,
-      "x": 235,
-      "y": 209,
+      "x": 245,
+      "y": 206,
       "label": "contact",
       "radius": 5
     }

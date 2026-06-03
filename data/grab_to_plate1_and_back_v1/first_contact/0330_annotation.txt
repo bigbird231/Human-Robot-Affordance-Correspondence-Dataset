@@ -1,0 +1,15 @@
+task: grab_to_plate1_and_back_v1
+frame_id: 0330
+contact_area_radius: 1
+human_image: 0330_human.jpg
+robot_image: 0330_robot.jpg
+
+[human_points]
+1,173,101,1,contact
+2,169,121,1,contact
+
+[robot_points]
+1,140,120,1,contact
+2,134,133,1,contact
+
+format: id,x,y,radius,label

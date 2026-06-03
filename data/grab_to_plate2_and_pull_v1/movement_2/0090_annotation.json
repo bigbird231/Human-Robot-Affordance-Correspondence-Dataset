@@ -1,0 +1,50 @@
+{
+  "task": "grab_to_plate2_and_back_v1",
+  "frame_id": "0090",
+  "contact_area_radius": 1,
+  "human_image": "0090_human.jpg",
+  "robot_image": "0090_robot.jpg",
+  "image_size": {
+    "human": {
+      "width": 426,
+      "height": 240
+    },
+    "robot": {
+      "width": 426,
+      "height": 240
+    }
+  },
+  "human_points": [
+    {
+      "id": 1,
+      "x": 268,
+      "y": 55,
+      "label": "contact",
+      "radius": 1
+    },
+    {
+      "id": 2,
+      "x": 255,
+      "y": 79,
+      "label": "contact",
+      "radius": 1
+    }
+  ],
+  "robot_points": [
+    {
+      "id": 1,
+      "x": 164,
+      "y": 90,
+      "label": "contact",
+      "radius": 1
+    },
+    {
+      "id": 2,
+      "x": 157,
+      "y": 107,
+      "label": "contact",
+      "radius": 1
+    }
+  ],
+  "note": "Coordinates and radius are original image pixel units."
+}

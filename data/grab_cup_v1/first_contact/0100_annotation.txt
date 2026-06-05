@@ -1,0 +1,15 @@
+task: grab_both_cubes_v1
+frame_id: 0100
+contact_area_radius: 3
+human_image: 0100_human.jpg
+robot_image: 0100_robot.jpg
+
+[human_points]
+1,131,89,1,contact
+2,131,100,3,contact
+
+[robot_points]
+1,116,96,1,contact
+2,112,104,3,contact
+
+format: id,x,y,radius,label

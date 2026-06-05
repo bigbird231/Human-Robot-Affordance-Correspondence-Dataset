@@ -1,0 +1,15 @@
+task: cloth
+frame_id: 0590
+contact_area_radius: 1
+human_image: 0590_human.jpg
+robot_image: 0590_robot.jpg
+
+[human_points]
+1,294,24,1,contact
+2,300,12,1,contact
+
+[robot_points]
+1,234,56,1,contact
+2,240,41,1,contact
+
+format: id,x,y,radius,label

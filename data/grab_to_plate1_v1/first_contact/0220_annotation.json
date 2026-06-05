@@ -2,8 +2,8 @@
   "task": "grab_to_plate1_v1",
   "frame_id": "0220",
   "contact_area_radius": 1,
-  "human_image": "0220_human.jpg",
-  "robot_image": "0220_robot.jpg",
+  "human_image": "0220_human_origin.png",
+  "robot_image": "0220_robot_origin.png",
   "image_size": {
     "human": {
       "width": 426,
@@ -17,15 +17,15 @@
   "human_points": [
     {
       "id": 1,
-      "x": 178,
-      "y": 109,
+      "x": 169,
+      "y": 130,
       "label": "contact",
-      "radius": 1
+      "radius": 5
     },
     {
       "id": 2,
-      "x": 169,
-      "y": 125,
+      "x": 180,
+      "y": 110,
       "label": "contact",
       "radius": 1
     }
@@ -33,15 +33,15 @@
   "robot_points": [
     {
       "id": 1,
-      "x": 114,
-      "y": 138,
+      "x": 113,
+      "y": 140,
       "label": "contact",
       "radius": 1
     },
     {
       "id": 2,
-      "x": 102,
-      "y": 159,
+      "x": 103,
+      "y": 158,
       "label": "contact",
       "radius": 1
     }

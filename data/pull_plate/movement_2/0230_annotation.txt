@@ -1,0 +1,13 @@
+task: pull_plate
+frame_id: 0230
+contact_area_radius: 4
+human_image: 0230_human_origin.png
+robot_image: 0230_robot_origin.png
+
+[human_points]
+1,335,46,3,contact
+
+[robot_points]
+1,285,68,4,contact
+
+format: id,x,y,radius,label

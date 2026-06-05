@@ -1,13 +1,15 @@
 task: grab_to_plate2_and_back_v1
 frame_id: 0100
-contact_area_radius: 1
-human_image: 0100_human.jpg
-robot_image: 0100_robot.jpg
+contact_area_radius: 5
+human_image: 0100_human_origin.png
+robot_image: 0100_robot_origin.png
 
 [human_points]
-1,163,49,1,contact
+1,163,50,1,contact
+2,151,73,5,contact
 
 [robot_points]
-1,113,108,1,contact
+1,115,109,1,contact
+2,105,122,1,contact
 
 format: id,x,y,radius,label

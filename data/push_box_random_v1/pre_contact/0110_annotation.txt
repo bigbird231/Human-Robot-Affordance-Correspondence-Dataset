@@ -1,0 +1,11 @@
+task: push_box_random_v1
+frame_id: 0110
+contact_area_radius: 5
+human_image: 0110_human.jpg
+robot_image: 0110_robot.jpg
+
+[human_points]
+
+[robot_points]
+
+format: id,x,y,radius,label

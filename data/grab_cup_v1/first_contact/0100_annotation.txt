@@ -1,0 +1,15 @@
+task: grab_cup_v1
+frame_id: 0100
+contact_area_radius: 1
+human_image: 0100_human.jpg
+robot_image: 0100_robot.jpg
+
+[human_points]
+1,128,98,1,contact
+2,128,86,1,contact
+
+[robot_points]
+1,109,100,1,contact
+2,114,93,1,contact
+
+format: id,x,y,radius,label

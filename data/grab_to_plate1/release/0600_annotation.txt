@@ -1,0 +1,11 @@
+task: grab_to_plate1
+frame_id: 0600
+contact_area_radius: 1
+human_image: 0600_human_r.jpg
+robot_image: 0600_robot_r.jpg
+
+[human_points]
+
+[robot_points]
+
+format: id,x,y,radius,label

@@ -1,0 +1,15 @@
+task: grab_pencil2_v1
+frame_id: 0280
+contact_area_radius: 1
+human_image: 0280_human.jpg
+robot_image: 0280_robot.jpg
+
+[human_points]
+1,245,97,1,contact
+2,240,107,1,contact
+
+[robot_points]
+1,216,105,1,contact
+2,214,113,1,contact
+
+format: id,x,y,radius,label

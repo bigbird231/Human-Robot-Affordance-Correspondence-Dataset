@@ -1,0 +1,15 @@
+task: push_box
+frame_id: 0180
+contact_area_radius: 2
+human_image: 0180_human.jpg
+robot_image: 0180_robot.jpg
+
+[human_points]
+1,178,155,2,contact
+2,210,95,2,contact
+
+[robot_points]
+1,169,169,2,contact
+2,192,107,2,contact
+
+format: id,x,y,radius,label

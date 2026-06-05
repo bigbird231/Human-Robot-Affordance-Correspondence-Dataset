@@ -1,0 +1,50 @@
+{
+  "task": "grab_pencil2_v1",
+  "frame_id": "0220",
+  "contact_area_radius": 1,
+  "human_image": "0220_human.jpg",
+  "robot_image": "0220_robot.jpg",
+  "image_size": {
+    "human": {
+      "width": 426,
+      "height": 240
+    },
+    "robot": {
+      "width": 426,
+      "height": 240
+    }
+  },
+  "human_points": [
+    {
+      "id": 1,
+      "x": 198,
+      "y": 90,
+      "label": "contact",
+      "radius": 1
+    },
+    {
+      "id": 2,
+      "x": 196,
+      "y": 100,
+      "label": "contact",
+      "radius": 1
+    }
+  ],
+  "robot_points": [
+    {
+      "id": 1,
+      "x": 101,
+      "y": 99,
+      "label": "contact",
+      "radius": 1
+    },
+    {
+      "id": 2,
+      "x": 99,
+      "y": 106,
+      "label": "contact",
+      "radius": 1
+    }
+  ],
+  "note": "Coordinates and radius are original image pixel units."
+}

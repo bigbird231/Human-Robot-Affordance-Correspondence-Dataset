@@ -1,15 +1,15 @@
 task: roll
 frame_id: 0540
-contact_area_radius: 2
+contact_area_radius: 3
 human_image: 0540_human.jpg
 robot_image: 0540_robot.jpg
 
 [human_points]
-1,285,69,4,contact
-2,291,78,4,contact
+1,286,68,1,contact
+2,284,84,3,contact
 
 [robot_points]
-1,294,140,2,contact
-2,284,153,2,contact
+1,296,140,1,contact
+2,281,150,3,contact
 
 format: id,x,y,radius,label

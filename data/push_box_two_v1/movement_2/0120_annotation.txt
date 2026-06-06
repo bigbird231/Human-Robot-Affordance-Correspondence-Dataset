@@ -1,13 +1,13 @@
 task: push_box_two_v1
 frame_id: 0120
-contact_area_radius: 3
+contact_area_radius: 1
 human_image: 0120_human.jpg
 robot_image: 0120_robot.jpg
 
 [human_points]
-1,262,160,3,contact
+1,261,161,1,contact
 
 [robot_points]
-1,164,178,3,contact
+1,163,179,1,contact
 
 format: id,x,y,radius,label

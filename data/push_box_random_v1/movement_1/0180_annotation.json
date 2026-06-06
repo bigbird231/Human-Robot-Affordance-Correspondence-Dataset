@@ -1,7 +1,7 @@
 {
   "task": "push_box_random_v1",
   "frame_id": "0180",
-  "contact_area_radius": 2,
+  "contact_area_radius": 1,
   "human_image": "0180_human.jpg",
   "robot_image": "0180_robot.jpg",
   "image_size": {
@@ -17,33 +17,33 @@
   "human_points": [
     {
       "id": 1,
-      "x": 152,
+      "x": 151,
       "y": 72,
       "label": "contact",
-      "radius": 2
+      "radius": 1
     },
     {
       "id": 2,
       "x": 131,
       "y": 109,
       "label": "contact",
-      "radius": 2
+      "radius": 1
     }
   ],
   "robot_points": [
     {
       "id": 1,
-      "x": 117,
+      "x": 114,
       "y": 66,
       "label": "contact",
-      "radius": 2
+      "radius": 1
     },
     {
       "id": 2,
       "x": 79,
-      "y": 117,
+      "y": 116,
       "label": "contact",
-      "radius": 2
+      "radius": 1
     }
   ],
   "note": "Coordinates and radius are original image pixel units."
